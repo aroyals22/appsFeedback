@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <h4>Feedback Results</h4>
+    </div>
+    <div class="card-body">
+      <ul id="answerList" class="list-group"></ul>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <p><a href="#" id="clear">Clear Feedback</a> | 
+  </div>
+    
+</body>
+<script type="text/javascript">
+  function getResults() {
+ $.ajax({url:"/api/answers", method: "GET"})
+    .then(function(answersData){
+      console.log(answersData)
+      for (var i=0; i<answersData.length; i++){
+        var answerList = $("#answerList")
+        var listItem = $("<li class='list-group-item mt-4'>");
+          listItem.append(
+            $("<h2>").text("Feedback" + (i + 1)),
+            $("<hr>"),
+            $("<p>").text("More training/content on what topics?" + answersData[i].q1),
+            $("<p>").text("One on one or group training?" + answersData[i].q2),
+            $("<p>").text("Hrs/week studying?" + answersData[i].q3),
+            $("<p>").text("Obstacles learning/retaining knowledge? " + answersData[i].q4),
+            $("<p>").text("Additional comments/suggestions?" + answersData[i].q5)
+          );
+          answerList.append(listItem);
+      }
+
+    })
+}
+
+function clear() {
+    alert("Clearing...");
+
+    // Clear the tables on the server and then empty the elements on the client
+    $.ajax({ url: "/api/clear", method: "POST" }).then(function() {
+      $("#answerList").empty();
+      
+    });
+  }
+
+  $("#clear").on("click", clear);
+
+
+
+
+getResults();
+
+
+
+</script>
+</html>

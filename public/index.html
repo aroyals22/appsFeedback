@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+  
+
+  <title>Apps Feedback</title>
+</head>
+<body>
+  <header class="hero">
+   
+
+    <div class="content">
+      <h1>Technical Training Feedback</h1>
+      <p>We'd like to know what obstacles you face in learning/retaining technical information related to our products.  Also, any suggestions in training methods you feel may work better or that we should continue to utlize.</p>
+      <h2>
+        Please fill out the form below honestly and anonymously
+      </h2>
+      
+    </div>
+    
+  </header>
+  <div class="card-body">
+    <form role="form">
+      <div class="form-group">
+        <label for="question1">What topics do you feel you need more training or training content on?</label>
+        <input type="text" class="form-control" id="question1">
+      </div>
+      <div class="form-group">
+        <label for="question2"> Do you prefer 1 on 1 training or group training, can you explain why? </label>
+        <input type="text" class="form-control" id="question2">
+      </div>
+      <div class="form-group">
+        <label for="question3">How many hours a week do you spend studying or referencing training materials? (i.e. manuals/whitepapers/QSG)</label>
+        <input type="text" class="form-control" id="question3">
+      </div>
+      <div class="form-group">
+        <label for="question4">What obstacles do you face learning/retaining technical knowledge? </label>
+        <input type="text" class="form-control" id="question4">
+      </div>
+      <div class="form-group">
+        <label for="question5">Do you have any additional suggestions or comments (beyond added frequency) on how to make technical training more effective? </label>
+        <input type="text" class="form-control" id="question5">
+      </div>
+      <button type="submit" class="btn btn-primary submit">Submit</button>
+    </form>
+  
+  </div>
+  <div>
+    <a id="hidden" href="/answers">.</a>
+  </div>
+</body>
+<script>
+ 
+  $(".submit").on("click", function(event) {
+    event.preventDefault();
+
+    // Here we grab the form elements
+    var newAnswer = {
+      q1: $("#question1").val().trim(),
+      q2: $("#question2").val().trim(),
+      q3: $("#question3").val().trim(),
+      q4: $("#question4").val().trim(),
+      q5: $("#question5").val().trim()
+    };
+
+    console.log(newAnswer);
+    
+    $.post("/api/answers", newAnswer,
+      function(data) {
+        if (data) {
+          alert("Thanks for feedback, get back to work!");
+        }
+
+       // Clear the form when submitting
+        $("#question1").val("");
+        $("#question2").val("");
+        $("#question3").val("");
+        $("#question4").val("");
+        $("#question5").val("");
+
+      });
+
+  });
+
+</script>
+
+</html>
